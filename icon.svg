@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#081426"/>
+      <stop offset="100%" stop-color="#10233C"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38E17D"/>
+      <stop offset="100%" stop-color="#16B85C"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD15A"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="110" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="174" fill="none" stroke="#17324F" stroke-width="4"/>
+
+  <circle cx="256.00" cy="106.00" r="23" fill="url(#gold)" stroke="#FFF0B0" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="251.00" cy="100.00" r="5" fill="#FFFFFF" opacity="0.48"/>
+  <circle cx="294.82" cy="111.11" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="289.82" cy="105.11" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="331.00" cy="126.10" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="326.00" cy="120.10" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="362.07" cy="149.93" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="357.07" cy="143.93" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="385.90" cy="181.00" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="380.90" cy="175.00" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="400.89" cy="217.18" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="395.89" cy="211.18" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="406.00" cy="256.00" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="401.00" cy="250.00" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="400.89" cy="294.82" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="395.89" cy="288.82" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="385.90" cy="331.00" r="23" fill="url(#gold)" stroke="#FFF0B0" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="380.90" cy="325.00" r="5" fill="#FFFFFF" opacity="0.48"/>
+  <circle cx="362.07" cy="362.07" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="357.07" cy="356.07" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="331.00" cy="385.90" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="326.00" cy="379.90" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="294.82" cy="400.89" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="289.82" cy="394.89" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="256.00" cy="406.00" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="251.00" cy="400.00" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="217.18" cy="400.89" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="212.18" cy="394.89" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="181.00" cy="385.90" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="176.00" cy="379.90" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="149.93" cy="362.07" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="144.93" cy="356.07" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="126.10" cy="331.00" r="23" fill="url(#gold)" stroke="#FFF0B0" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="121.10" cy="325.00" r="5" fill="#FFFFFF" opacity="0.48"/>
+  <circle cx="111.11" cy="294.82" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="106.11" cy="288.82" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="106.00" cy="256.00" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="101.00" cy="250.00" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="111.11" cy="217.18" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="106.11" cy="211.18" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="126.10" cy="181.00" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="121.10" cy="175.00" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="149.93" cy="149.93" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="144.93" cy="143.93" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="181.00" cy="126.10" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="176.00" cy="120.10" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <circle cx="217.18" cy="111.11" r="17" fill="url(#green)" stroke="#6EF0A2" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="212.18" cy="105.11" r="4" fill="#FFFFFF" opacity="0.32"/>
+  <rect x="188" y="206" width="136" height="100" rx="32" fill="#0A1728" stroke="#2D4A68" stroke-width="3"/>
+  <circle cx="222" cy="256" r="7" fill="#22C55E"/>
+  <circle cx="290" cy="256" r="7" fill="#22C55E"/>
+  <path d="M247 232h18c12 0 22 10 22 22s-10 22-22 22h-18c-12 0-22-10-22-22s10-22 22-22Z"
+        fill="none" stroke="#F8FAFC" stroke-width="10" stroke-linecap="round"/>
+  <path d="M256 306v24" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M238 333h36" stroke="#F59E0B" stroke-width="8" stroke-linecap="round"/>
+</svg>
