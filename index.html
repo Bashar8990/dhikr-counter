@@ -486,8 +486,14 @@
       text-align: left;
     }
 
+    .main-add-row {
+      display: flex;
+      gap: 7px;
+      align-items: stretch;
+    }
+
     .main-add-button {
-      width: 100%;
+      flex: 1;
       min-height: 51px;
       border: 0;
       border-radius: 14px;
@@ -499,6 +505,68 @@
       );
       font-size: 18px;
       font-weight: 900;
+    }
+
+    .undo-button {
+      flex-shrink: 0;
+      width: 56px;
+      min-height: 51px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 14px;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.1);
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .undo-button:active {
+      transform: scale(0.95);
+    }
+
+    .manage-session-button {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 7px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .manage-session-button:active {
+      transform: scale(0.97);
+    }
+
+    .manage-menu {
+      display: none;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 7px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--card-light);
+    }
+
+    .manage-menu.open {
+      display: flex;
+    }
+
+    .manage-menu .compact-row,
+    .manage-menu .bottom-actions {
+      margin: 0;
     }
 
     .compact-row {
@@ -805,6 +873,16 @@
 
       .session-tab {
         min-height: 34px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
     }
 
@@ -1711,6 +1789,7 @@
     class="modal-overlay"
     role="dialog"
     aria-modal="true"
+    aria-labelledby="modalTitle"
     aria-hidden="true"
   >
     <div class="modal">
@@ -1797,6 +1876,7 @@
     class="confirm-overlay"
     role="dialog"
     aria-modal="true"
+    aria-labelledby="confirmTitle"
     aria-hidden="true"
   >
     <div class="confirm-box">
@@ -1862,7 +1942,12 @@
       class="fullscreen-name"
     ></div>
 
-    <div class="fullscreen-tap-area">
+    <div
+      class="fullscreen-tap-area"
+      role="button"
+      tabindex="0"
+      aria-label="زيادة العداد بالضغط هنا"
+    >
       <div
         id="fullscreenCounter"
         class="fullscreen-counter"
@@ -1883,12 +1968,13 @@
     class="achievements-overlay"
     role="dialog"
     aria-modal="true"
+    aria-labelledby="achievementsTitle"
     aria-hidden="true"
   >
     <div class="achievements-box">
 
       <div class="achievements-header">
-        <h2>سجل الإنجازات</h2>
+        <h2 id="achievementsTitle">سجل الإنجازات</h2>
 
         <div style="display: flex; align-items: center;">
           <span
@@ -1992,7 +2078,7 @@
             data-theme="night"
           >
             <span class="theme-option-swatch swatch-night"></span>
-            ليلي
+            داكن
           </button>
 
           <button
@@ -2001,7 +2087,7 @@
             data-theme="girly"
           >
             <span class="theme-option-swatch swatch-girly"></span>
-            بناتي
+            وردي
           </button>
 
           <button
@@ -2010,7 +2096,7 @@
             data-theme="light"
           >
             <span class="theme-option-swatch swatch-light"></span>
-            نهاري
+            فاتح
           </button>
 
           <button
@@ -2019,10 +2105,27 @@
             data-theme="nature"
           >
             <span class="theme-option-swatch swatch-nature"></span>
-            طبيعي
+            أخضر طبيعي
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">الإعدادات</div>
+
+      <button
+        id="sidebarVibration"
+        class="sidebar-item"
+        type="button"
+      >
+        <span class="sidebar-item-icon install">📳</span>
+        الاهتزاز عند العد
+        <span
+          id="vibrationStatus"
+          class="sidebar-item-badge"
+        >تشغيل</span>
+      </button>
     </div>
 
     <div class="sidebar-section">
@@ -2062,6 +2165,7 @@
     const STORAGE_KEY = "dhikrCounterSessionsV3";
     const ACTIVE_SESSION_KEY = "dhikrCounterActiveSessionV3";
     const ACHIEVEMENTS_KEY = "dhikrCounterAchievementsV1";
+    const VIBRATION_KEY = "dhikrCounterVibration";
 
     const newSessionButton =
       document.getElementById("newSessionButton");
@@ -2109,6 +2213,39 @@
     let deferredInstallPrompt = null;
 
     let achievements = [];
+
+    let vibrationEnabled = true;
+
+    function loadVibrationSetting() {
+      const saved =
+        localStorage.getItem(VIBRATION_KEY);
+
+      vibrationEnabled = saved !== "false";
+    }
+
+    function saveVibrationSetting() {
+      localStorage.setItem(
+        VIBRATION_KEY,
+        vibrationEnabled ? "true" : "false"
+      );
+    }
+
+    function vibrate(pattern) {
+      if (
+        vibrationEnabled &&
+        "vibrate" in navigator
+      ) {
+        try {
+          navigator.vibrate(pattern);
+        } catch (e) {}
+      }
+    }
+
+    function vibrateGoalReached() {
+      vibrate([30, 50, 30, 50, 60]);
+    }
+
+    loadVibrationSetting();
 
     const achievementsBadge =
       document.getElementById("achievementsBadge");
@@ -2262,22 +2399,26 @@
         .join("");
     }
 
+    let achievementsUntrap = null;
+
     function openAchievements() {
       renderAchievements();
 
-      achievementsOverlay.classList.add("visible");
-      achievementsOverlay.setAttribute(
-        "aria-hidden",
-        "false"
+      if (achievements.length > 0) {
+        clearAchievementsButton.classList.remove("hidden");
+      } else {
+        clearAchievementsButton.classList.add("hidden");
+      }
+
+      achievementsUntrap = openWithFocusTrap(
+        achievementsOverlay,
+        document.activeElement
       );
     }
 
     function closeAchievements() {
-      achievementsOverlay.classList.remove("visible");
-      achievementsOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
+      closeWithFocusRestore(achievementsOverlay, achievementsUntrap);
+      achievementsUntrap = null;
     }
 
     achievementsClose.addEventListener(
@@ -2366,6 +2507,22 @@
         ) {
           recordAchievement(session);
           showMessage("🎉 أكملت الهدف!");
+          vibrateGoalReached();
+        } else {
+          vibrate(15);
+        }
+      }
+    );
+
+    fullscreenTapArea.addEventListener(
+      "keydown",
+      function (event) {
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+          event.preventDefault();
+          fullscreenTapArea.click();
         }
       }
     );
@@ -2538,6 +2695,35 @@
       }
     );
 
+    const sidebarVibration =
+      document.getElementById("sidebarVibration");
+
+    const vibrationStatus =
+      document.getElementById("vibrationStatus");
+
+    function updateVibrationStatus() {
+      vibrationStatus.textContent =
+        vibrationEnabled ? "تشغيل" : "إيقاف";
+    }
+
+    updateVibrationStatus();
+
+    sidebarVibration.addEventListener(
+      "click",
+      function () {
+        vibrationEnabled = !vibrationEnabled;
+        saveVibrationSetting();
+        updateVibrationStatus();
+
+        if (vibrationEnabled) {
+          vibrate(30);
+          showMessage("تم تفعيل الاهتزاز");
+        } else {
+          showMessage("تم إيقاف الاهتزاز");
+        }
+      }
+    );
+
     const confirmOverlay =
       document.getElementById("confirmOverlay");
 
@@ -2554,6 +2740,7 @@
       document.getElementById("confirmCancelButton");
 
     let confirmAction = null;
+    let confirmUntrap = null;
 
     function openConfirm(options) {
       confirmTitleElement.textContent =
@@ -2570,22 +2757,15 @@
           ? options.onConfirm
           : null;
 
-      confirmOverlay.classList.add("visible");
-
-      confirmOverlay.setAttribute(
-        "aria-hidden",
-        "false"
+      confirmUntrap = openWithFocusTrap(
+        confirmOverlay,
+        document.activeElement
       );
     }
 
     function closeConfirm() {
-      confirmOverlay.classList.remove("visible");
-
-      confirmOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
+      closeWithFocusRestore(confirmOverlay, confirmUntrap);
+      confirmUntrap = null;
       confirmAction = null;
     }
 
@@ -2615,6 +2795,71 @@
         }
       }
     );
+
+    let lastFocusedElement = null;
+
+    function trapFocus(container) {
+      const focusable =
+        container.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+      if (focusable.length === 0) {
+        return null;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      first.focus();
+
+      function handler(event) {
+        if (event.key !== "Tab") {
+          return;
+        }
+
+        if (event.shiftKey) {
+          if (document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      }
+
+      container.addEventListener("keydown", handler);
+
+      return function untrap() {
+        container.removeEventListener("keydown", handler);
+      };
+    }
+
+    function openWithFocusTrap(overlay, triggerElement) {
+      lastFocusedElement = triggerElement || document.activeElement;
+      overlay.classList.add("visible");
+      overlay.setAttribute("aria-hidden", "false");
+      return trapFocus(overlay);
+    }
+
+    function closeWithFocusRestore(overlay, untrapFn) {
+      overlay.classList.remove("visible");
+      overlay.setAttribute("aria-hidden", "true");
+
+      if (typeof untrapFn === "function") {
+        untrapFn();
+      }
+
+      if (
+        lastFocusedElement &&
+        typeof lastFocusedElement.focus === "function"
+      ) {
+        lastFocusedElement.focus();
+      }
+    }
 
     function createId() {
       return (
@@ -2891,7 +3136,11 @@
 
           <div class="counter-section">
             <div class="counter-box">
-              <div id="counterValue">
+              <div
+                id="counterValue"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 ${formatNumber(session.count)}
               </div>
             </div>
@@ -2914,13 +3163,25 @@
             </div>
           </div>
 
-          <button
-            id="increaseOneButton"
-            class="main-add-button"
-            type="button"
-          >
-            ＋ زيادة واحدة
-          </button>
+          <div class="main-add-row">
+            <button
+              id="increaseOneButton"
+              class="main-add-button"
+              type="button"
+            >
+              ＋ زيادة واحدة
+            </button>
+
+            <button
+              id="undoButton"
+              class="undo-button"
+              type="button"
+              aria-label="تراجع عن آخر زيادة"
+              title="تراجع"
+            >
+              −
+            </button>
+          </div>
 
           <div class="compact-row">
             <input
@@ -2942,41 +3203,52 @@
             </button>
           </div>
 
-          <div class="compact-row">
-            <input
-              id="setNumberInput"
-              type="number"
-              inputmode="numeric"
-              min="0"
-              step="1"
-              placeholder="تعيين العدد الحالي"
-            >
+          <button
+            id="manageSessionButton"
+            class="manage-session-button"
+            type="button"
+            aria-expanded="false"
+          >
+            ⚙ إدارة الجلسة
+          </button>
 
-            <button
-              id="setNumberButton"
-              class="action-button"
-              type="button"
-            >
-              تعيين
-            </button>
-          </div>
+          <div id="manageMenu" class="manage-menu">
+            <div class="compact-row">
+              <input
+                id="setNumberInput"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                step="1"
+                placeholder="تعيين العدد الحالي"
+              >
 
-          <div class="bottom-actions">
-            <button
-              id="resetButton"
-              class="reset-button"
-              type="button"
-            >
-              تصفير الجلسة
-            </button>
+              <button
+                id="setNumberButton"
+                class="action-button"
+                type="button"
+              >
+                تعيين
+              </button>
+            </div>
 
-            <button
-              id="deleteButton"
-              class="delete-button"
-              type="button"
-            >
-              حذف الجلسة
-            </button>
+            <div class="bottom-actions">
+              <button
+                id="resetButton"
+                class="reset-button"
+                type="button"
+              >
+                تصفير الجلسة
+              </button>
+
+              <button
+                id="deleteButton"
+                class="delete-button"
+                type="button"
+              >
+                حذف الجلسة
+              </button>
+            </div>
           </div>
 
           <button
@@ -3029,6 +3301,21 @@
       const customIncreaseButton =
         document.getElementById(
           "customIncreaseButton"
+        );
+
+      const undoButton =
+        document.getElementById(
+          "undoButton"
+        );
+
+      const manageSessionButton =
+        document.getElementById(
+          "manageSessionButton"
+        );
+
+      const manageMenu =
+        document.getElementById(
+          "manageMenu"
         );
 
       const setNumberInput =
@@ -3093,7 +3380,48 @@
           ) {
             recordAchievement(session);
             showMessage("🎉 أكملت الهدف!");
+            vibrateGoalReached();
+          } else {
+            vibrate(15);
           }
+        }
+      );
+
+      undoButton.addEventListener(
+        "click",
+        function () {
+          const session = getActiveSession();
+
+          if (!session) {
+            return;
+          }
+
+          if (session.count <= 0) {
+            showMessage("العداد بالفعل صفر");
+            return;
+          }
+
+          session.count -= 1;
+          session.updatedAt = Date.now();
+
+          saveData();
+          render();
+          animateCounter();
+
+          vibrate(10);
+        }
+      );
+
+      manageSessionButton.addEventListener(
+        "click",
+        function () {
+          const isOpen =
+            manageMenu.classList.toggle("open");
+
+          manageSessionButton.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+          );
         }
       );
 
@@ -3145,6 +3473,9 @@
           ) {
             recordAchievement(session);
             showMessage("🎉 أكملت الهدف!");
+            vibrateGoalReached();
+          } else {
+            vibrate(15);
           }
         }
       );
@@ -3338,12 +3669,12 @@
       });
     }
 
-    function openModal() {
-      sessionModal.classList.add("visible");
+    let modalUntrap = null;
 
-      sessionModal.setAttribute(
-        "aria-hidden",
-        "false"
+    function openModal() {
+      modalUntrap = openWithFocusTrap(
+        sessionModal,
+        document.activeElement
       );
 
       setTimeout(function () {
@@ -3352,12 +3683,8 @@
     }
 
     function closeModal() {
-      sessionModal.classList.remove("visible");
-
-      sessionModal.setAttribute(
-        "aria-hidden",
-        "true"
-      );
+      closeWithFocusRestore(sessionModal, modalUntrap);
+      modalUntrap = null;
     }
 
     function openCreateModal() {
