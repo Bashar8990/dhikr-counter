@@ -1,4 +1,4 @@
-const CACHE_NAME = "dhikr-counter-v5";
+const CACHE_NAME = "dhikr-counter-v8";
 const ASSETS = [
   "./",
   "./index.html",
