@@ -196,13 +196,39 @@
     .top-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 8px;
       min-height: 43px;
+      position: relative;
     }
 
     .title-area {
       min-width: 0;
+      text-align: center;
+    }
+
+    .sidebar-toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 150ms ease;
+    }
+
+    .sidebar-toggle:active {
+      transform: translateY(-50%) scale(0.92);
     }
 
     .title-area h1 {
@@ -880,6 +906,524 @@
       background: #2563eb;
     }
 
+    .fab-button {
+      position: fixed;
+      z-index: 1500;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      left: max(18px, env(safe-area-inset-left));
+      width: 56px;
+      height: 56px;
+      border: 0;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      font-size: 28px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.45);
+      transition: transform 150ms ease;
+    }
+
+    .fab-button:active {
+      transform: scale(0.9);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-toggle:active {
+      transform: scale(0.92);
+    }
+
+    .sidebar {
+      position: fixed;
+      z-index: 2500;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 260px;
+      max-width: 80vw;
+      transform: translateX(100%);
+      transition: transform 250ms ease;
+      display: flex;
+      flex-direction: column;
+      padding:
+        max(16px, env(safe-area-inset-top))
+        16px
+        max(16px, env(safe-area-inset-bottom));
+      border-left: 1px solid var(--border);
+      background: var(--modal-bg);
+      box-shadow: -6px 0 30px rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-backdrop {
+      position: fixed;
+      z-index: 2400;
+      inset: 0;
+      display: none;
+      background: var(--overlay-bg);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .sidebar-backdrop.visible {
+      display: block;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-header h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .sidebar-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .sidebar-section {
+      margin-bottom: 16px;
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--muted);
+      margin-bottom: 8px;
+      padding: 0 4px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: right;
+      margin-bottom: 7px;
+    }
+
+    .sidebar-item:active {
+      transform: scale(0.97);
+    }
+
+    .sidebar-item-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .sidebar-item-icon.achievements {
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--orange);
+    }
+
+    .sidebar-item-icon.whatsapp {
+      background: rgba(37, 211, 102, 0.18);
+      color: #25d366;
+    }
+
+    .sidebar-item-icon.install {
+      background: rgba(59, 130, 246, 0.18);
+      color: var(--blue);
+    }
+
+    .sidebar-item-badge {
+      margin-right: auto;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--green);
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-item-badge.hidden {
+      display: none;
+    }
+
+    .theme-accordion {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      overflow: hidden;
+      background: var(--card-light);
+    }
+
+    .theme-accordion-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 14px;
+      border: 0;
+      color: var(--text);
+      background: transparent;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .theme-accordion-chevron {
+      margin-right: auto;
+      font-size: 12px;
+      transition: transform 200ms ease;
+      color: var(--muted);
+    }
+
+    .theme-accordion.open .theme-accordion-chevron {
+      transform: rotate(180deg);
+    }
+
+    .theme-accordion-body {
+      display: none;
+      padding: 8px 10px 12px;
+      gap: 8px;
+      flex-direction: column;
+    }
+
+    .theme-accordion.open .theme-accordion-body {
+      display: flex;
+    }
+
+    .theme-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 12px;
+      border: 2px solid transparent;
+      border-radius: 11px;
+      color: var(--text);
+      background: var(--card);
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .theme-option.active {
+      border-color: var(--blue);
+    }
+
+    .theme-option:active {
+      transform: scale(0.97);
+    }
+
+    .theme-option-swatch {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+    }
+
+    .swatch-night {
+      background: linear-gradient(135deg, #07111f, #0d1a2d);
+    }
+
+    .swatch-girly {
+      background: linear-gradient(135deg, #1a0d1a, #2a1428);
+    }
+
+    .swatch-light {
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    }
+
+    .swatch-nature {
+      background: linear-gradient(135deg, #0f1a14, #16241b);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .fullscreen-button {
+      width: 100%;
+      min-height: 38px;
+      margin-top: 7px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .fullscreen-button:active {
+      transform: scale(0.97);
+    }
+
+    .fullscreen-overlay {
+      position: fixed;
+      z-index: 4000;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      background: var(--background);
+    }
+
+    .fullscreen-overlay.visible {
+      display: flex;
+    }
+
+    .fullscreen-counter {
+      font-size: clamp(60px, 22vw, 140px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      user-select: none;
+    }
+
+    .fullscreen-name {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .fullscreen-tap-area {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .fullscreen-exit {
+      position: absolute;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(12px, env(safe-area-inset-right));
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fullscreen-progress {
+      width: 80%;
+      max-width: 300px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--progress-track);
+      overflow: hidden;
+    }
+
+    .fullscreen-progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--green-dark));
+      transition: width 200ms ease;
+    }
+
+    .achievements-overlay {
+      position: fixed;
+      z-index: 3500;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding:
+        max(16px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+      background: var(--overlay-bg);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+    }
+
+    .achievements-overlay.visible {
+      display: flex;
+    }
+
+    .achievements-box {
+      width: 100%;
+      max-width: 420px;
+      max-height: 85%;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--modal-bg);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+      animation: confirmBoxIn 180ms ease-out;
+    }
+
+    .achievements-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .achievements-header h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .achievements-total {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--card-light);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .achievements-close {
+      width: 34px;
+      height: 34px;
+      margin-right: 8px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      background: var(--card-light);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .achievements-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 4px;
+    }
+
+    .achievement-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--card-light);
+    }
+
+    .achievement-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .achievement-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .achievement-name {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: bold;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .achievement-date {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .achievement-count {
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .achievements-empty {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .achievements-empty-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+
     @media (max-width: 340px) {
       .theme-sidebar {
         padding: 8px 6px;
@@ -1123,18 +1667,19 @@
   <main class="app">
 
     <header class="top-header">
+      <button
+        id="sidebarToggle"
+        class="sidebar-toggle"
+        type="button"
+        aria-label="القائمة"
+      >
+        ☰
+      </button>
+
       <div class="title-area">
         <h1>عداد الأوراد</h1>
         <p class="dedication">عن روح الحاجة زبيدة حمود</p>
       </div>
-
-      <button
-        id="newSessionButton"
-        class="new-session-button"
-        type="button"
-      >
-        ＋ جلسة جديدة
-      </button>
     </header>
 
     <section
@@ -1298,45 +1843,225 @@
     </div>
   </div>
 
-  <div class="theme-sidebar" role="toolbar" aria-label="اختيار الستايل">
+  <div
+    id="fullscreenOverlay"
+    class="fullscreen-overlay"
+    aria-hidden="true"
+  >
     <button
-      class="theme-button theme-button-night active"
+      id="fullscreenExit"
+      class="fullscreen-exit"
       type="button"
-      data-theme="night"
-      aria-label="ستايل ليلي"
-      title="ليلي"
-    ></button>
+      aria-label="خروج"
+    >
+      ×
+    </button>
 
-    <button
-      class="theme-button theme-button-girly"
-      type="button"
-      data-theme="girly"
-      aria-label="ستايل بناتي"
-      title="بناتي"
-    ></button>
+    <div
+      id="fullscreenName"
+      class="fullscreen-name"
+    ></div>
 
-    <button
-      class="theme-button theme-button-light"
-      type="button"
-      data-theme="light"
-      aria-label="ستايل نهاري"
-      title="نهاري"
-    ></button>
+    <div class="fullscreen-tap-area">
+      <div
+        id="fullscreenCounter"
+        class="fullscreen-counter"
+      >0</div>
+    </div>
 
-    <button
-      class="theme-button theme-button-nature"
-      type="button"
-      data-theme="nature"
-      aria-label="ستايل طبيعي"
-      title="طبيعي"
-    ></button>
+    <div class="fullscreen-progress">
+      <div
+        id="fullscreenProgressBar"
+        class="fullscreen-progress-bar"
+        style="width: 0%"
+      ></div>
+    </div>
   </div>
+
+  <div
+    id="achievementsOverlay"
+    class="achievements-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+  >
+    <div class="achievements-box">
+
+      <div class="achievements-header">
+        <h2>سجل الإنجازات</h2>
+
+        <div style="display: flex; align-items: center;">
+          <span
+            id="achievementsTotal"
+            class="achievements-total"
+          >0 إنجاز</span>
+
+          <button
+            id="achievementsClose"
+            class="achievements-close"
+            type="button"
+            aria-label="إغلاق"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="achievementsList"
+        class="achievements-list"
+      ></div>
+
+    </div>
+  </div>
+
+  <div
+    id="sidebarBackdrop"
+    class="sidebar-backdrop"
+  ></div>
+
+  <aside
+    id="sidebar"
+    class="sidebar"
+    aria-hidden="true"
+  >
+    <div class="sidebar-header">
+      <h2>القائمة</h2>
+
+      <button
+        id="sidebarClose"
+        class="sidebar-close"
+        type="button"
+        aria-label="إغلاق"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">الجلسات</div>
+
+      <button
+        id="newSessionButton"
+        class="sidebar-item"
+        type="button"
+      >
+        <span class="sidebar-item-icon install">＋</span>
+        جلسة جديدة
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">الإنجازات</div>
+
+      <button
+        id="sidebarAchievements"
+        class="sidebar-item"
+        type="button"
+      >
+        <span class="sidebar-item-icon achievements">🏆</span>
+        سجل الإنجازات
+        <span
+          id="achievementsBadge"
+          class="sidebar-item-badge hidden"
+        >0</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">المظهر</div>
+
+      <div
+        id="themeAccordion"
+        class="theme-accordion"
+      >
+        <button
+          id="themeAccordionHeader"
+          class="theme-accordion-header"
+          type="button"
+        >
+          <span>🎨</span>
+          الستايلات
+          <span class="theme-accordion-chevron">▼</span>
+        </button>
+
+        <div class="theme-accordion-body">
+          <button
+            class="theme-option active"
+            type="button"
+            data-theme="night"
+          >
+            <span class="theme-option-swatch swatch-night"></span>
+            ليلي
+          </button>
+
+          <button
+            class="theme-option"
+            type="button"
+            data-theme="girly"
+          >
+            <span class="theme-option-swatch swatch-girly"></span>
+            بناتي
+          </button>
+
+          <button
+            class="theme-option"
+            type="button"
+            data-theme="light"
+          >
+            <span class="theme-option-swatch swatch-light"></span>
+            نهاري
+          </button>
+
+          <button
+            class="theme-option"
+            type="button"
+            data-theme="nature"
+          >
+            <span class="theme-option-swatch swatch-nature"></span>
+            طبيعي
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">تواصل</div>
+
+      <button
+        id="sidebarWhatsapp"
+        class="sidebar-item"
+        type="button"
+      >
+        <span class="sidebar-item-icon whatsapp">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </span>
+        تواصل لطلب تطبيق
+      </button>
+
+      <button
+        id="sidebarInstall"
+        class="sidebar-item"
+        type="button"
+      >
+        <span class="sidebar-item-icon install">⬇</span>
+        تثبيت التطبيق
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      عن روح الحاجة زبيدة حمود
+    </div>
+  </aside>
 
   <script>
     "use strict";
 
     const STORAGE_KEY = "dhikrCounterSessionsV3";
     const ACTIVE_SESSION_KEY = "dhikrCounterActiveSessionV3";
+    const ACHIEVEMENTS_KEY = "dhikrCounterAchievementsV1";
 
     const newSessionButton =
       document.getElementById("newSessionButton");
@@ -1383,9 +2108,322 @@
     let messageTimer = null;
     let deferredInstallPrompt = null;
 
+    let achievements = [];
+
+    const achievementsBadge =
+      document.getElementById("achievementsBadge");
+
+    const achievementsOverlay =
+      document.getElementById("achievementsOverlay");
+
+    const achievementsClose =
+      document.getElementById("achievementsClose");
+
+    const achievementsList =
+      document.getElementById("achievementsList");
+
+    const achievementsTotal =
+      document.getElementById("achievementsTotal");
+
+    const fullscreenOverlay =
+      document.getElementById("fullscreenOverlay");
+
+    const fullscreenExit =
+      document.getElementById("fullscreenExit");
+
+    const fullscreenCounter =
+      document.getElementById("fullscreenCounter");
+
+    const fullscreenName =
+      document.getElementById("fullscreenName");
+
+    const fullscreenProgressBar =
+      document.getElementById("fullscreenProgressBar");
+
+    const fullscreenTapArea =
+      document.querySelector(".fullscreen-tap-area");
+
+    function loadAchievements() {
+      try {
+        const saved =
+          localStorage.getItem(ACHIEVEMENTS_KEY);
+
+        if (saved) {
+          const parsed = JSON.parse(saved);
+
+          if (Array.isArray(parsed)) {
+            achievements = parsed;
+          }
+        }
+      } catch (error) {
+        achievements = [];
+      }
+
+      updateAchievementsBadge();
+    }
+
+    function saveAchievements() {
+      localStorage.setItem(
+        ACHIEVEMENTS_KEY,
+        JSON.stringify(achievements)
+      );
+
+      updateAchievementsBadge();
+    }
+
+    function updateAchievementsBadge() {
+      if (achievements.length > 0) {
+        achievementsBadge.textContent =
+          achievements.length;
+        achievementsBadge.classList.remove("hidden");
+      } else {
+        achievementsBadge.classList.add("hidden");
+      }
+    }
+
+    function recordAchievement(session) {
+      const achievement = {
+        id: createId(),
+        sessionName: session.name,
+        count: session.count,
+        goal: session.goal,
+        date: Date.now()
+      };
+
+      achievements.unshift(achievement);
+
+      if (achievements.length > 100) {
+        achievements = achievements.slice(0, 100);
+      }
+
+      saveAchievements();
+    }
+
+    function formatDate(timestamp) {
+      const date = new Date(timestamp);
+
+      const months = [
+        "يناير", "فبراير", "مارس",
+        "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر",
+        "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+      return day + " " + month + " " + year +
+        " - " + hours + ":" + minutes;
+    }
+
+    function renderAchievements() {
+      if (achievements.length === 0) {
+        achievementsList.innerHTML = `
+          <div class="achievements-empty">
+            <div class="achievements-empty-icon">🏆</div>
+            لا توجد إنجازات بعد.
+            <br>
+            أكمل هدف أي جلسة لتسجيل إنجاز.
+          </div>
+        `;
+        achievementsTotal.textContent = "0 إنجاز";
+        return;
+      }
+
+      achievementsTotal.textContent =
+        formatNumber(achievements.length) + " إنجاز";
+
+      achievementsList.innerHTML = achievements
+        .map(function (item) {
+          return `
+            <div class="achievement-item">
+              <div class="achievement-icon">✓</div>
+
+              <div class="achievement-info">
+                <div class="achievement-name">
+                  ${escapeHtml(item.sessionName)}
+                </div>
+
+                <div class="achievement-date">
+                  ${formatDate(item.date)}
+                </div>
+              </div>
+
+              <div class="achievement-count">
+                ${formatNumber(item.count)}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function openAchievements() {
+      renderAchievements();
+
+      achievementsOverlay.classList.add("visible");
+      achievementsOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+    }
+
+    function closeAchievements() {
+      achievementsOverlay.classList.remove("visible");
+      achievementsOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+    achievementsClose.addEventListener(
+      "click",
+      closeAchievements
+    );
+
+    achievementsOverlay.addEventListener(
+      "click",
+      function (event) {
+        if (event.target === achievementsOverlay) {
+          closeAchievements();
+        }
+      }
+    );
+
+    function openFullscreen() {
+      const session = getActiveSession();
+
+      if (!session) {
+        return;
+      }
+
+      updateFullscreenDisplay();
+      fullscreenOverlay.classList.add("visible");
+      fullscreenOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeFullscreen() {
+      fullscreenOverlay.classList.remove("visible");
+      fullscreenOverlay.setAttribute("aria-hidden", "true");
+      render();
+    }
+
+    function updateFullscreenDisplay() {
+      const session = getActiveSession();
+
+      if (!session) {
+        return;
+      }
+
+      fullscreenCounter.textContent =
+        formatNumber(session.count);
+
+      fullscreenName.textContent = session.name;
+
+      let percent = 0;
+
+      if (session.goal > 0) {
+        percent = (session.count / session.goal) * 100;
+      }
+
+      fullscreenProgressBar.style.width =
+        Math.min(Math.max(percent, 0), 100) + "%";
+    }
+
+    fullscreenExit.addEventListener(
+      "click",
+      closeFullscreen
+    );
+
+    fullscreenTapArea.addEventListener(
+      "click",
+      function () {
+        const session = getActiveSession();
+
+        if (!session) {
+          return;
+        }
+
+        const wasComplete =
+          session.goal > 0 &&
+          session.count >= session.goal;
+
+        session.count += 1;
+        session.updatedAt = Date.now();
+
+        saveData();
+
+        updateFullscreenDisplay();
+
+        if (
+          !wasComplete &&
+          session.goal > 0 &&
+          session.count >= session.goal
+        ) {
+          recordAchievement(session);
+          showMessage("🎉 أكملت الهدف!");
+        }
+      }
+    );
+
     const THEME_KEY = "dhikrCounterTheme";
-    const themeButtons =
-      document.querySelectorAll(".theme-button");
+
+    const sidebarToggle =
+      document.getElementById("sidebarToggle");
+
+    const sidebarClose =
+      document.getElementById("sidebarClose");
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const sidebarBackdrop =
+      document.getElementById("sidebarBackdrop");
+
+    const sidebarAchievements =
+      document.getElementById("sidebarAchievements");
+
+    const sidebarWhatsapp =
+      document.getElementById("sidebarWhatsapp");
+
+    const sidebarInstall =
+      document.getElementById("sidebarInstall");
+
+    const themeAccordion =
+      document.getElementById("themeAccordion");
+
+    const themeAccordionHeader =
+      document.getElementById("themeAccordionHeader");
+
+    const themeOptions =
+      document.querySelectorAll(".theme-option");
+
+    function openSidebar() {
+      sidebar.classList.add("open");
+      sidebarBackdrop.classList.add("visible");
+      sidebar.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      sidebarBackdrop.classList.remove("visible");
+      sidebar.setAttribute("aria-hidden", "true");
+    }
+
+    sidebarToggle.addEventListener("click", openSidebar);
+    sidebarClose.addEventListener("click", closeSidebar);
+    sidebarBackdrop.addEventListener("click", closeSidebar);
+
+    themeAccordionHeader.addEventListener(
+      "click",
+      function () {
+        themeAccordion.classList.toggle("open");
+      }
+    );
 
     function applyTheme(theme) {
       if (theme === "night") {
@@ -1399,11 +2437,11 @@
         );
       }
 
-      themeButtons.forEach(function (button) {
-        if (button.dataset.theme === theme) {
-          button.classList.add("active");
+      themeOptions.forEach(function (option) {
+        if (option.dataset.theme === theme) {
+          option.classList.add("active");
         } else {
-          button.classList.remove("active");
+          option.classList.remove("active");
         }
       });
 
@@ -1437,9 +2475,9 @@
       applyTheme(saved);
     }
 
-    themeButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        const theme = button.dataset.theme;
+    themeOptions.forEach(function (option) {
+      option.addEventListener("click", function () {
+        const theme = option.dataset.theme;
 
         applyTheme(theme);
         saveTheme(theme);
@@ -1447,6 +2485,58 @@
     });
 
     loadTheme();
+
+    sidebarAchievements.addEventListener(
+      "click",
+      function () {
+        closeSidebar();
+        setTimeout(openAchievements, 250);
+      }
+    );
+
+    sidebarWhatsapp.addEventListener(
+      "click",
+      function () {
+        const phone = "963953812362";
+
+        const message =
+          "السلام عليكم، أريد طلب تطبيق";
+
+        const encodedMessage =
+          encodeURIComponent(message);
+
+        const isAndroid =
+          /Android/i.test(navigator.userAgent);
+
+        if (isAndroid) {
+          const androidIntent =
+            "intent://send" +
+            "?phone=" + phone +
+            "&text=" + encodedMessage +
+            "#Intent;" +
+            "scheme=whatsapp;" +
+            "package=com.whatsapp;" +
+            "end";
+
+          window.location.href = androidIntent;
+          return;
+        }
+
+        window.location.href =
+          "https://wa.me/" +
+          phone +
+          "?text=" +
+          encodedMessage;
+      }
+    );
+
+    sidebarInstall.addEventListener(
+      "click",
+      function () {
+        closeSidebar();
+        setTimeout(installApplication, 250);
+      }
+    );
 
     const confirmOverlay =
       document.getElementById("confirmOverlay");
@@ -1890,20 +2980,11 @@
           </div>
 
           <button
-            id="whatsappButton"
-            class="whatsapp-fab"
+            id="fullscreenButton"
+            class="fullscreen-button"
             type="button"
-            aria-label="تواصل عبر واتساب لطلب تطبيق"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-
-            تواصل لطلب تطبيق خاص بك
+            ⤢ وضع ملء الشاشة
           </button>
 
           <button
@@ -1975,9 +3056,9 @@
           "editSessionButton"
         );
 
-      const whatsappButton =
+      const fullscreenButton =
         document.getElementById(
-          "whatsappButton"
+          "fullscreenButton"
         );
 
       const installAppButton =
@@ -1994,12 +3075,25 @@
             return;
           }
 
+          const wasComplete =
+            session.goal > 0 &&
+            session.count >= session.goal;
+
           session.count += 1;
           session.updatedAt = Date.now();
 
           saveData();
           render();
           animateCounter();
+
+          if (
+            !wasComplete &&
+            session.goal > 0 &&
+            session.count >= session.goal
+          ) {
+            recordAchievement(session);
+            showMessage("🎉 أكملت الهدف!");
+          }
         }
       );
 
@@ -2028,6 +3122,10 @@
             return;
           }
 
+          const wasComplete =
+            session.goal > 0 &&
+            session.count >= session.goal;
+
           session.customIncrease =
             Math.floor(value);
 
@@ -2039,6 +3137,15 @@
           saveData();
           render();
           animateCounter();
+
+          if (
+            !wasComplete &&
+            session.goal > 0 &&
+            session.count >= session.goal
+          ) {
+            recordAchievement(session);
+            showMessage("🎉 أكملت الهدف!");
+          }
         }
       );
 
@@ -2146,42 +3253,6 @@
         openEditModal
       );
 
-      whatsappButton.addEventListener(
-        "click",
-        function () {
-          const phone = "963953812362";
-
-          const message =
-            "السلام عليكم، أريد طلب تطبيق";
-
-          const encodedMessage =
-            encodeURIComponent(message);
-
-          const isAndroid =
-            /Android/i.test(navigator.userAgent);
-
-          if (isAndroid) {
-            const androidIntent =
-              "intent://send" +
-              "?phone=" + phone +
-              "&text=" + encodedMessage +
-              "#Intent;" +
-              "scheme=whatsapp;" +
-              "package=com.whatsapp;" +
-              "end";
-
-            window.location.href = androidIntent;
-            return;
-          }
-
-          window.location.href =
-            "https://wa.me/" +
-            phone +
-            "?text=" +
-            encodedMessage;
-        }
-      );
-
       customIncreaseInput.addEventListener(
         "keydown",
         function (event) {
@@ -2199,6 +3270,13 @@
           }
         }
       );
+
+      if (fullscreenButton) {
+        fullscreenButton.addEventListener(
+          "click",
+          openFullscreen
+        );
+      }
 
       if (installAppButton) {
         installAppButton.addEventListener(
@@ -2438,7 +3516,10 @@
 
     newSessionButton.addEventListener(
       "click",
-      openCreateModal
+      function () {
+        closeSidebar();
+        setTimeout(openCreateModal, 250);
+      }
     );
 
     saveSessionButton.addEventListener(
@@ -2469,6 +3550,27 @@
       "keydown",
       function (event) {
         if (event.key !== "Escape") {
+          return;
+        }
+
+        if (
+          sidebar.classList.contains("open")
+        ) {
+          closeSidebar();
+          return;
+        }
+
+        if (
+          fullscreenOverlay.classList.contains("visible")
+        ) {
+          closeFullscreen();
+          return;
+        }
+
+        if (
+          achievementsOverlay.classList.contains("visible")
+        ) {
+          closeAchievements();
           return;
         }
 
@@ -2583,6 +3685,7 @@
     );
 
     loadData();
+    loadAchievements();
     render();
 
     if ("serviceWorker" in navigator) {
