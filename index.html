@@ -1514,6 +1514,28 @@
       opacity: 0.5;
     }
 
+    .clear-achievements-button {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 12px;
+      padding: 9px 14px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.1);
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .clear-achievements-button:active {
+      transform: scale(0.97);
+    }
+
+    .clear-achievements-button.hidden {
+      display: none;
+    }
+
     @media (max-width: 340px) {
       .theme-sidebar {
         padding: 8px 6px;
@@ -2010,6 +2032,14 @@
         class="achievements-list"
       ></div>
 
+      <button
+        id="clearAchievementsButton"
+        class="clear-achievements-button hidden"
+        type="button"
+      >
+        🗑 مسح سجل الإنجازات
+      </button>
+
     </div>
   </div>
 
@@ -2271,6 +2301,9 @@
     const achievementsList =
       document.getElementById("achievementsList");
 
+    const clearAchievementsButton =
+      document.getElementById("clearAchievementsButton");
+
     const achievementsTotal =
       document.getElementById("achievementsTotal");
 
@@ -2444,6 +2477,31 @@
         if (event.target === achievementsOverlay) {
           closeAchievements();
         }
+      }
+    );
+
+    clearAchievementsButton.addEventListener(
+      "click",
+      function () {
+        openConfirm({
+          title: "مسح السجل",
+
+          message:
+            "سيتم حذف جميع الإنجازات نهائيًا." +
+            '<span class="confirm-session-name">' +
+            formatNumber(achievements.length) +
+            " إنجاز</span>",
+
+          acceptText: "نعم، مسح الكل",
+
+          onConfirm: function () {
+            achievements = [];
+            saveAchievements();
+            renderAchievements();
+            clearAchievementsButton.classList.add("hidden");
+            showMessage("تم مسح سجل الإنجازات");
+          }
+        });
       }
     );
 
